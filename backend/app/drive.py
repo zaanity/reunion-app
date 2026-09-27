@@ -22,31 +22,40 @@ def _resolve_path(value: str) -> Path:
 
 
 def _service():
-    token_path = _resolve_path(settings.google_drive_token_file)
-    credentials_path = _resolve_path(settings.google_drive_credentials_file)
+    credentials_path = Path(settings.GOOGLE_DRIVE_CREDENTIALS_FILE)
+    token_path = Path(settings.GOOGLE_DRIVE_TOKEN_FILE)
 
-    if not credentials_path.is_file():
-        raise FileNotFoundError(
-            f"Google OAuth client credentials not found: {credentials_path}"
-        )
-    if not token_path.is_file():
-        raise FileNotFoundError(
-            f"Google Drive OAuth token not found: {token_path}. "
-            "Run: python authorize_drive.py"
+    if not credentials_path.exists():
+        raise RuntimeError(
+            f"Google OAuth credentials file not found: {credentials_path}"
         )
 
-    credentials = Credentials.from_authorized_user_file(str(token_path), SCOPES)
+    if not token_path.exists():
+        raise RuntimeError(
+            f"Google OAuth token file not found: {token_path}"
+        )
+
+    credentials = Credentials.from_authorized_user_file(
+        str(token_path),
+        SCOPES,
+    )
+
     if credentials.expired and credentials.refresh_token:
+        # Render Secret Files are read-only.
+        # Refresh the token in memory only.
         credentials.refresh(Request())
-        token_path.write_text(credentials.to_json(), encoding="utf-8")
 
     if not credentials.valid:
         raise RuntimeError(
-            "Google Drive authorization is invalid or expired. "
-            "Run: python authorize_drive.py"
+            "Google Drive OAuth credentials are invalid or expired."
         )
 
-    return build("drive", "v3", credentials=credentials, cache_discovery=False)
+    return build(
+        "drive",
+        "v3",
+        credentials=credentials,
+        cache_discovery=False,
+    )
 
 
 def sanitize_folder_name(name: str) -> str:

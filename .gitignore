@@ -1,0 +1,96 @@
+# ============================================
+# Samaagam Memory Drop — Git Ignore
+# ============================================
+
+# ---------- Environment / Secrets ----------
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Google OAuth credentials
+backend/token.json
+backend/credentials/
+backend/**/credentials.json
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+
+.venv/
+venv/
+env/
+ENV/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---------- FastAPI / Runtime ----------
+*.log
+logs/
+
+# Local uploaded/temp files
+backend/uploads/
+backend/temp/
+backend/tmp/
+backend/data/
+backend/*.db
+backend/*.sqlite
+backend/*.sqlite3
+
+# ---------- Next.js ----------
+frontend/.next/
+frontend/out/
+
+# Next.js build/cache
+.next/
+out/
+
+# ---------- Node ----------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------- TypeScript ----------
+*.tsbuildinfo
+
+# ---------- Vercel ----------
+.vercel/
+
+# ---------- IDE ----------
+.vscode/
+.idea/
+
+# VS Code local settings — keep shared config if needed
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Temporary files ----------
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ---------- Archives ----------
+*.zip
+*.tar
+*.tar.gz
+
+# ---------- Test / Debug ----------
+test-output/
+coverage/
+
+# ---------- Local development ----------
+*.local
